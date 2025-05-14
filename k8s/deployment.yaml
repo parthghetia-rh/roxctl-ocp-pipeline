@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: python-sample
+  name: python-sample
+  # namespace: parth-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-sample
+  template:
+    metadata:
+      labels:
+        app: python-sample
+        deployment: python-sample
+    spec:
+      containers:
+      - image: innovative-quay-quay-registry.apps.parth-rosa-acm.4h5l.p1.openshiftapps.com/quayadmin/pipeline-demo:latest
+      #- image: image-registry.openshift-image-registry.svc:5000/pipelines-demo/python-sample:latest
+        imagePullPolicy: Always
+        name: python-sample
