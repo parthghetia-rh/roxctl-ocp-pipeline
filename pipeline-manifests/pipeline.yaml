@@ -10,7 +10,7 @@ spec:
   workspaces:
   - name: shared-workspace
   - name: rox-api-token-auth
-  
+
   params:
   - name: deployment-name
     type: string
@@ -118,7 +118,8 @@ spec:
     - name: source
       workspace: shared-workspace
     runAfter:
-    - build-image
+    - police-image
+
   - name: update-deployment
     taskRef:
       name: update-deployment
