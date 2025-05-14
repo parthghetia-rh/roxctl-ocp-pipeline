@@ -15,6 +15,9 @@ spec:
   - name: deployment-name
     type: string
     description: name of the deployment to be patched
+  - name: deployment
+    type: string
+    description: filename of the deployment to be patched
   - name: git-url
     type: string
     description: url of the git repo for the code of deployment
@@ -59,6 +62,30 @@ spec:
       value: "true"
     - name: revision
       value: $(params.git-revision)
+
+   # validate deployment against defined  RHACS policies
+
+  - name: police-deployment
+    taskRef:
+      name: rhacs-deployment-check
+      kind: Task
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    - name: rox-api-token-auth
+      workspace: rox-api-token-auth
+    params:
+    - name: deployment
+      value: $(params.deployment)
+    - name: insecure-skip-tls-verify
+      value: "true"
+    - name: rox_token_file
+      value: $(params.rox_token_file)
+    - name: rox_image
+      value: $(params.rox_image)
+    runAfter:
+    - fetch-repository
+
   - name: build-image
     taskRef:
       name: buildah
@@ -70,7 +97,7 @@ spec:
     - name: source
       workspace: shared-workspace
     runAfter:
-    - fetch-repository
+    - police-deployment
   # scan image for vulns using RHACS
   - name: scan-image
     taskRef:
