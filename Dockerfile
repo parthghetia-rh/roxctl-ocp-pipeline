@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/python-312:9.7-1770654692
+FROM registry.access.redhat.com/ubi9/python-312:9.6-1754326132
 WORKDIR /app
 
 COPY app/ /app/
